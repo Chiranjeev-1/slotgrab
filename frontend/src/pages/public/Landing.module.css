@@ -1,0 +1,275 @@
+.page {
+  overflow-x: hidden;
+}
+
+/* Hero */
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 560px;
+}
+
+.badge {
+  display: inline-block;
+  background: #f0eeff;
+  color: #6c63ff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #1a1a2e;
+  margin-bottom: 18px;
+}
+
+.highlight {
+  color: #6c63ff;
+}
+
+.heroSubtitle {
+  font-size: 1.05rem;
+  color: #666688;
+  line-height: 1.7;
+  margin-bottom: 32px;
+  color: #555577;
+}
+
+.heroActions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.primaryBtn {
+  background: #6c63ff;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.primaryBtn:hover {
+  background: #574fd6;
+  transform: translateY(-1px);
+}
+
+.secondaryBtn {
+  background: #fff;
+  color: #6c63ff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 2px solid #6c63ff;
+  transition: background 0.2s;
+}
+
+.secondaryBtn:hover {
+  background: #f0eeff;
+}
+
+.heroVisual {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.card1, .card2 {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 30px rgba(108, 99, 255, 0.12);
+  font-size: 1.8rem;
+  min-width: 260px;
+}
+
+.card2 {
+  background: linear-gradient(135deg, #6c63ff, #574fd6);
+  color: #fff;
+  align-self: flex-start;
+}
+
+.cardTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.cardSub {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+/* Sections */
+.section {
+  background: #fff;
+  padding: 60px 24px;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 40px;
+}
+
+.categories {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background: #f8f9ff;
+  border-radius: 16px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1.5px solid transparent;
+}
+
+.categoryCard:hover {
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.15);
+  border-color: #6c63ff;
+  transform: translateY(-2px);
+}
+
+.categoryIcon {
+  font-size: 2rem;
+}
+
+.categoryName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4a4a6a;
+  text-align: center;
+}
+
+/* How it works */
+.howSection {
+  padding: 60px 24px;
+  background: #f8f9ff;
+}
+
+.steps {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.step {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.stepIcon {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+}
+
+.stepTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.stepDesc {
+  font-size: 0.87rem;
+  color: #8888a8;
+  line-height: 1.6;
+}
+
+/* CTA */
+.cta {
+  background: linear-gradient(135deg, #6c63ff 0%, #574fd6 100%);
+  padding: 80px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.ctaTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.ctaSubtitle {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin-bottom: 32px;
+}
+
+.ctaBtn {
+  background: #fff;
+  color: #6c63ff;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.ctaBtn:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroActions {
+    justify-content: center;
+  }
+
+  .heroVisual {
+    align-items: center;
+    width: 100%;
+  }
+
+  .card1, .card2 {
+    align-self: auto;
+    min-width: unset;
+    width: 100%;
+  }
+}

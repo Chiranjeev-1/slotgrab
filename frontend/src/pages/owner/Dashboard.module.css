@@ -1,0 +1,400 @@
+.page {
+  min-height: 100vh;
+  background: #f8f9ff;
+}
+
+.loader {
+  text-align: center;
+  padding: 80px;
+  color: #8888a8;
+}
+
+.header {
+  background: linear-gradient(135deg, #6c63ff 0%, #574fd6 100%);
+  padding: 40px 24px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.back {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 4px;
+}
+
+.bizName {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.bizField {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.editBtn {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.editBtn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: #fff;
+  border-bottom: 1px solid #ececf1;
+}
+
+.statCard {
+  padding: 20px;
+  text-align: center;
+  border-right: 1px solid #ececf1;
+}
+
+.statCard:last-child {
+  border-right: none;
+}
+
+.statNumber {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #6c63ff;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  color: #8888a8;
+  font-weight: 500;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: #fff;
+  padding: 6px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  width: fit-content;
+}
+
+.tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #8888a8;
+  background: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab:hover {
+  color: #6c63ff;
+}
+
+.activeTab {
+  background: #6c63ff;
+  color: #fff;
+}
+
+.activeTab:hover {
+  color: #fff;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabTopBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.addBtn {
+  background: #6c63ff;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.addBtn:hover {
+  background: #574fd6;
+}
+
+.empty {
+  color: #8888a8;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* Appointments */
+.apptList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.apptCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.apptInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.apptUser {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.apptService {
+  font-size: 0.85rem;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
+.apptSlot {
+  font-size: 0.82rem;
+  color: #8888a8;
+}
+
+.apptActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.statusBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.statusBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.confirmBtn {
+  background: #f0eeff;
+  color: #6c63ff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.confirmBtn:hover {
+  background: #6c63ff;
+  color: #fff;
+}
+
+.completeBtn {
+  background: #f0fff4;
+  color: #10b981;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.completeBtn:hover {
+  background: #10b981;
+  color: #fff;
+}
+
+/* Services */
+.serviceList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.serviceCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.svcName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.svcDesc {
+  font-size: 0.82rem;
+  color: #8888a8;
+  margin-bottom: 6px;
+}
+
+.svcCharge {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #6c63ff;
+}
+
+.itemActions {
+  display: flex;
+  gap: 8px;
+}
+
+.editItemBtn {
+  background: #f0eeff;
+  color: #6c63ff;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.editItemBtn:hover {
+  background: #e0d8ff;
+}
+
+.deleteBtn {
+  background: #fff0f0;
+  color: #ef4444;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.deleteBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Slots */
+.slotList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.slotCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.slotCard.booked {
+  opacity: 0.6;
+}
+
+.slotDate {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4a4a6a;
+}
+
+.slotTime {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.slotRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.availBadge {
+  background: #f0fff4;
+  color: #10b981;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.bookedBadge {
+  background: #fff0f0;
+  color: #ef4444;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .apptCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .apptActions {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+}

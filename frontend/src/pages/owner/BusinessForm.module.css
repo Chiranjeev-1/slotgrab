@@ -1,0 +1,141 @@
+.page {
+  min-height: 100vh;
+  background: #f8f9ff;
+  padding: 40px 24px;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.loader {
+  text-align: center;
+  padding: 80px;
+  color: #8888a8;
+}
+
+.back {
+  background: none;
+  color: #6c63ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 28px;
+}
+
+.error {
+  background: #fff0f0;
+  color: #e53e3e;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  margin-bottom: 20px;
+  border-left: 3px solid #e53e3e;
+}
+
+.form {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a4a6a;
+}
+
+.optional {
+  font-weight: 400;
+  color: #aaaacc;
+}
+
+.input, .textarea {
+  padding: 11px 14px;
+  border: 1.5px solid #e0e0f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+  background: #fafafa;
+  transition: border-color 0.2s;
+}
+
+.input:focus, .textarea:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background: #fff;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+.cancelBtn {
+  padding: 11px 24px;
+  background: #f0eeff;
+  color: #6c63ff;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #e0d8ff;
+}
+
+.submitBtn {
+  padding: 11px 28px;
+  background: #6c63ff;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover {
+  background: #574fd6;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
