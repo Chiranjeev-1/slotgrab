@@ -12,6 +12,7 @@ from .serializers import (
     SlotSerializer, AppointmentSerializer
 )
 from rest_framework.exceptions import PermissionDenied
+from django.http import JsonResponse
 
 # ─── AUTH ───────────────────────────────────────────
 
@@ -288,3 +289,9 @@ class BusinessAppointmentsView(generics.ListAPIView):
             {'error': 'Invalid status'},
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+
+
+
+def ping(request):
+    return JsonResponse({"status": "ok"})

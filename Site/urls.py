@@ -28,4 +28,6 @@ urlpatterns = [
     path('appointments/', views.AppointmentListCreateView.as_view(), name='appointment-list'),
     path('appointments/<int:pk>/', views.AppointmentDetailView.as_view(), name='appointment-detail'),
     path('businesses/<int:business_id>/appointments/', views.BusinessAppointmentsView.as_view(), name='business-appointments'),
+    # urls.py
+path('ping/', views.ping),
 ]
