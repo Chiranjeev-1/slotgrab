@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-4w886bp3**3i7uumkphvpkomfp#gbv&7q7-&7=^h1e&x&tt=4y
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["slotgrab.onrender.com",
+    "localhost",
+    "127.0.0.1",]
 
 AUTH_USER_MODEL = 'Site.User'
 # Application definition
@@ -80,7 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'slotgrab.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = True  # restrict in production
+CORS_ALLOW_ALL_ORIGINS = ["https://appointly-two-eta.vercel.app/"]  # restrict in production
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
