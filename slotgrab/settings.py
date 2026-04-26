@@ -82,7 +82,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'slotgrab.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = ["https://appointly-two-eta.vercel.app/"]  # restrict in production
+CORS_ALLOW_ALL_ORIGINS = False # restrict in production
+CORS_ALLOWED_ORIGINS = [
+    "https://appointly-two-eta.vercel.app/"
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
