@@ -5,7 +5,7 @@
 }
 
 .container {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -22,7 +22,32 @@
   font-size: 1.8rem;
   font-weight: 800;
   color: #1a1a2e;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
+}
+
+.modeToggle {
+  display: flex;
+  gap: 0;
+  background: #fff;
+  border: 1.5px solid #e0e0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+
+.modeBtn {
+  padding: 10px 24px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #8888a8;
+  background: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.activeModeBtn {
+  background: #6c63ff;
+  color: #fff;
 }
 
 .formCard {
@@ -50,10 +75,20 @@
   border-left: 3px solid #e53e3e;
 }
 
-.form {
+.successMsg {
+  background: #f0fff4;
+  color: #276749;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  margin-bottom: 16px;
+  border-left: 3px solid #38a169;
+}
+
+.dateRow {
   display: flex;
-  align-items: flex-end;
   gap: 16px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
@@ -69,6 +104,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: #4a4a6a;
+  margin-bottom: 4px;
 }
 
 .input {
@@ -87,15 +123,59 @@
   background: #fff;
 }
 
+.timeSection {
+  margin-bottom: 20px;
+}
+
+.timeGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timeChip {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: #f0f0f8;
+  color: #4a4a6a;
+  border: 1.5px solid #e0e0f0;
+  transition: all 0.15s;
+}
+
+.timeChip:hover {
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+
+.activeChip {
+  background: #6c63ff;
+  color: #fff;
+  border-color: #6c63ff;
+}
+
+.activeChip:hover {
+  background: #574fd6;
+  color: #fff;
+}
+
+.selectedCount {
+  font-size: 0.8rem;
+  color: #8888a8;
+}
+
 .addBtn {
   background: #6c63ff;
   color: #fff;
-  padding: 11px 24px;
+  padding: 12px 28px;
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 700;
   transition: background 0.2s;
-  white-space: nowrap;
+  margin-top: 8px;
 }
 
 .addBtn:hover {
@@ -107,12 +187,15 @@
   cursor: not-allowed;
 }
 
+.listSection {
+  margin-top: 8px;
+}
 
 .listTitle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1a1a2e;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .loader, .empty {
@@ -122,74 +205,63 @@
   padding: 40px 0;
 }
 
-.slotGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+.dateGroup {
+  margin-bottom: 20px;
 }
 
-.slotCard {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
+.dateHeading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6c63ff;
+  background: #f0eeff;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.slotRow {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.slotChip {
+  display: flex;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  border: 1.5px solid #e0e0f0;
-}
-
-.slotCard.booked {
-  opacity: 0.6;
-  background: #fafafa;
-}
-
-.slotDate {
-  font-size: 0.82rem;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #4a4a6a;
-  margin-bottom: 2px;
+  border: 1.5px solid transparent;
 }
 
-.slotTime {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1a1a2e;
-}
-
-.slotRight {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
-.availBadge {
+.freeChip {
   background: #f0fff4;
-  color: #10b981;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 10px;
+  border-color: #38a169;
+  color: #276749;
 }
 
-.bookedBadge {
+.bookedChip {
   background: #fff0f0;
-  color: #ef4444;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 10px;
+  border-color: #ef4444;
+  color: #c53030;
+  opacity: 0.7;
+}
+
+.slotStatus {
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .deleteBtn {
-  background: #fff0f0;
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;

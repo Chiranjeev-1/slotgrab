@@ -159,3 +159,23 @@
     text-align: center;
   }
 }
+
+.activeLink {
+  color: #6c63ff;
+  position: relative;
+}
+
+.activeLink::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #6c63ff;
+  border-radius: 2px;
+}
+
+.activeLoginBtn {
+  background: #f0eeff;
+}

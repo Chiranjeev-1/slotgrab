@@ -61,13 +61,17 @@ export default function Dashboard() {
   }
 
   const handleStatusUpdate = async (apptId, status) => {
-    try {
-      await updateAppointmentStatus(id, apptId, status)
-      setAppointments((prev) =>
-        prev.map((a) => a.appointment_id === apptId ? { ...a, status } : a)
+  try {
+    await updateAppointmentStatus(apptId, status)
+    setAppointments((prev) =>
+      prev.map((a) =>
+        a.appointment_id === apptId ? { ...a, status } : a
       )
-    } catch (e) { console.error(e) }
+    )
+  } catch (e) {
+    console.error(e)
   }
+}
 
   if (loading) return <div className={styles.loader}>Loading dashboard...</div>
 
@@ -137,34 +141,43 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className={styles.apptActions}>
-                      <span
-                        className={styles.statusBadge}
-                        style={{
-                          background: statusColors[appt.status] + '20',
-                          color: statusColors[appt.status]
-                        }}
-                      >
-                        {appt.status}
-                      </span>
-                      {appt.status === 'pending' && (
-                        <div className={styles.statusBtns}>
-                          <button
-                            onClick={() => handleStatusUpdate(appt.appointment_id, 'confirmed')}
-                            className={styles.confirmBtn}
-                          >
-                            Confirm
-                          </button>
-                        </div>
-                      )}
-                      {appt.status === 'confirmed' && (
-                        <button
-                          onClick={() => handleStatusUpdate(appt.appointment_id, 'completed')}
-                          className={styles.completeBtn}
-                        >
-                          Complete
-                        </button>
-                      )}
-                    </div>
+  <span
+    className={styles.statusBadge}
+    style={{
+      background: statusColors[appt.status] + '20',
+      color: statusColors[appt.status],
+    }}
+  >
+    {appt.status}
+  </span>
+
+  <div className={styles.statusBtns}>
+    {appt.status === 'pending' && (
+      <button
+        onClick={() => handleStatusUpdate(appt.appointment_id, 'confirmed')}
+        className={styles.confirmBtn}
+      >
+        Confirm
+      </button>
+    )}
+    {(appt.status === 'pending' || appt.status === 'confirmed') && (
+      <button
+        onClick={() => handleStatusUpdate(appt.appointment_id, 'cancelled')}
+        className={styles.cancelApptBtn}
+      >
+        Cancel
+      </button>
+    )}
+    {appt.status === 'confirmed' && (
+      <button
+        onClick={() => handleStatusUpdate(appt.appointment_id, 'completed')}
+        className={styles.completeBtn}
+      >
+        Complete
+      </button>
+    )}
+  </div>
+</div>
                   </div>
                 ))}
               </div>

@@ -44,7 +44,7 @@ export const getAppointment = (id) => api.get(`/appointments/${id}/`)
 export const createAppointment = (data) => api.post('/appointments/', data)
 export const cancelAppointment = (id) => api.patch(`/appointments/${id}/`, { status: 'cancelled' })
 export const getBusinessAppointments = (businessId) => api.get(`/businesses/${businessId}/appointments/`)
-export const updateAppointmentStatus = (businessId, id, status) =>
-  api.patch(`/businesses/${businessId}/appointments/${id}/`, { status })
+export const updateAppointmentStatus = (apptId, status) =>
+  api.patch(`/appointments/${apptId}/`, { status })
 
 export default api

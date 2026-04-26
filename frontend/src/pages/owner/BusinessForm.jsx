@@ -7,6 +7,21 @@ export default function BusinessForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isEdit = Boolean(id)
+  const BUSINESS_FIELDS = [
+  'Healthcare',
+  'Beauty & Salon',
+  'Fitness',
+  'Legal',
+  'Consulting',
+  'Education',
+  'Finance',
+  'Real Estate',
+  'Technology',
+  'Food & Beverage',
+  'Retail',
+  'Transportation',
+  'Other',
+]
 
   const [formData, setFormData] = useState({
     business_name: '',
@@ -95,16 +110,19 @@ export default function BusinessForm() {
 
           <div className={styles.row}>
             <div className={styles.field}>
-              <label className={styles.label}>Business Field</label>
-              <input
-                type="text"
-                name="business_field"
-                value={formData.business_field}
-                onChange={handleChange}
-                className={styles.input}
-                placeholder="e.g. Healthcare"
-              />
-            </div>
+  <label className={styles.label}>Business Field</label>
+  <select
+    name="business_field"
+    value={formData.business_field}
+    onChange={handleChange}
+    className={styles.input}
+  >
+    <option value="">Select a category</option>
+    {BUSINESS_FIELDS.map((field) => (
+      <option key={field} value={field}>{field}</option>
+    ))}
+  </select>
+</div>
             <div className={styles.field}>
               <label className={styles.label}>Domain / Website</label>
               <input

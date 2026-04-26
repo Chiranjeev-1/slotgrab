@@ -1,0 +1,53 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9ff;
+  padding: 24px;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.code {
+  font-size: 7rem;
+  font-weight: 900;
+  color: #6c63ff;
+  line-height: 1;
+  opacity: 0.15;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-top: -40px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #8888a8;
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+.homeBtn {
+  margin-top: 12px;
+  background: #6c63ff;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.homeBtn:hover {
+  background: #574fd6;
+}

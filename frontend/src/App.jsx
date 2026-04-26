@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
-import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
+import NotFound from './pages/NotFound'
+
 
 // Auth
 import Login from './pages/auth/Login'
@@ -22,6 +23,7 @@ import BusinessForm from './pages/owner/BusinessForm'
 import Dashboard from './pages/owner/Dashboard'
 import ServiceForm from './pages/owner/ServiceForm'
 import SlotManager from './pages/owner/SlotManager'
+import ProtectedRoute, { PublicOnlyRoute } from './components/ProtectedRoute'
 
 export default function App() {
   return (
@@ -37,8 +39,14 @@ export default function App() {
             <Route path="/businesses/:id" element={<BusinessDetail />} />
 
             {/* Auth */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={
+  <PublicOnlyRoute><Login /></PublicOnlyRoute>
+} />
+<Route path="/signup" element={
+  <PublicOnlyRoute><Signup /></PublicOnlyRoute>
+} />
+
+<Route path="*" element={<NotFound />} />
 
 
             <Route path="/appointments" element={

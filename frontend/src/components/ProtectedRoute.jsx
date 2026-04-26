@@ -5,3 +5,8 @@ export default function ProtectedRoute({ children }) {
   const { user } = useAuth()
   return user ? children : <Navigate to="/login" replace />
 }
+
+export function PublicOnlyRoute({ children }) {
+  const { user } = useAuth()
+  return user ? <Navigate to="/" replace /> : children
+}

@@ -248,22 +248,51 @@ class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Appointment.objects.filter(user=self.request.user)
+        # return all appointments accessible by this user
+        # either as customer or as business owner
+        from django.db.models import Q
+        return Appointment.objects.filter(
+            Q(user=self.request.user) |
+            Q(service__business__user=self.request.user)
+        )
 
     def patch(self, request, *args, **kwargs):
         appointment = self.get_object()
-        # only allow cancellation by customer
         new_status = request.data.get('status')
+
+        is_customer = appointment.user == request.user
+        is_owner = appointment.service.business.user == request.user
+
+        if is_customer and not is_owner:
+            # customer can only cancel
+            if new_status != 'cancelled':
+                return Response(
+                    {'error': 'Customers can only cancel appointments'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+        elif is_owner:
+            # owner can confirm, complete, cancel
+            if new_status not in ['confirmed', 'completed', 'cancelled']:
+                return Response(
+                    {'error': 'Invalid status'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        else:
+            return Response(
+                {'error': 'Permission denied'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         if new_status == 'cancelled':
             appointment.status = 'cancelled'
             appointment.slot.is_booked = False
             appointment.slot.save()
-            appointment.save()
-            return Response(AppointmentSerializer(appointment).data)
-        return Response(
-            {'error': 'Customers can only cancel appointments'},
-            status=status.HTTP_403_FORBIDDEN
-        )
+
+        appointment.status = new_status
+        appointment.save()
+
+        return Response(AppointmentSerializer(appointment).data)
 
 
 class BusinessAppointmentsView(generics.ListAPIView):
