@@ -14,6 +14,9 @@ from .serializers import (
 from rest_framework.exceptions import PermissionDenied
 from django.http import JsonResponse
 
+from social_django.utils import psa
+from rest_framework_simplejwt.tokens import RefreshToken
+
 # ─── AUTH ───────────────────────────────────────────
 
 class RegisterView(APIView):
@@ -324,3 +327,51 @@ class BusinessAppointmentsView(generics.ListAPIView):
 
 def ping(request):
     return JsonResponse({"status": "ok"})
+
+
+
+class GoogleAuthView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        # receives the auth code from frontend
+        code = request.data.get('code')
+        if not code:
+            return Response(
+                {'error': 'Authorization code required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            from social_core.backends.google import GoogleOAuth2
+            from social_django.utils import load_strategy, load_backend
+
+            strategy = load_strategy(request)
+            backend = load_backend(
+                strategy=strategy,
+                name='google-oauth2',
+                redirect_uri=request.data.get('redirect_uri')
+            )
+
+            # exchange code for user
+            user = backend.auth_complete(request=request._request)
+
+            if not user:
+                return Response(
+                    {'error': 'Google authentication failed'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'user': UserSerializer(user).data,
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )

@@ -46,5 +46,6 @@ export const cancelAppointment = (id) => api.patch(`/appointments/${id}/`, { sta
 export const getBusinessAppointments = (businessId) => api.get(`/businesses/${businessId}/appointments/`)
 export const updateAppointmentStatus = (apptId, status) =>
   api.patch(`/appointments/${apptId}/`, { status })
+export const googleAuth = (data) => api.post('/auth/google/', data)
 
 export default api

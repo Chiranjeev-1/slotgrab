@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import api from '../api/axios'
+import { googleAuth } from '../api/axios'
 
 const AuthContext = createContext()
 
@@ -34,11 +35,30 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  
+const loginWithGoogle = async (credentialResponse) => {
+  const res = await googleAuth({
+    code: credentialResponse.code,
+    redirect_uri: window.location.origin
+  })
+  localStorage.setItem('access', res.data.access)
+  localStorage.setItem('refresh', res.data.refresh)
+  localStorage.setItem('user', JSON.stringify(res.data.user))
+  setUser(res.data.user)
+  return res.data
+}
+
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loginWithGoogle }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
 export const useAuth = () => useContext(AuthContext)
+
+
+
+
+

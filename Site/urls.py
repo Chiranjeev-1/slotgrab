@@ -30,4 +30,5 @@ urlpatterns = [
     path('businesses/<int:business_id>/appointments/', views.BusinessAppointmentsView.as_view(), name='business-appointments'),
     # urls.py
 path('ping/', views.ping),
+path('auth/google/', views.GoogleAuthView.as_view(), name='google-auth'),
 ]

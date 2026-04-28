@@ -24,6 +24,7 @@ import Dashboard from './pages/owner/Dashboard'
 import ServiceForm from './pages/owner/ServiceForm'
 import SlotManager from './pages/owner/SlotManager'
 import ProtectedRoute, { PublicOnlyRoute } from './components/ProtectedRoute'
+import Footer from './components/Footer'
 
 export default function App() {
   return (
@@ -80,6 +81,7 @@ export default function App() {
 
           </Routes>
         </main>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   )
