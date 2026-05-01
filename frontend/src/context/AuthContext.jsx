@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 import api from '../api/axios'
-import { googleAuth } from '../api/axios'
 
 const AuthContext = createContext()
 
@@ -29,36 +28,35 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await api.post('/auth/logout/', { refresh: localStorage.getItem('refresh') })
+      await api.post('/auth/logout/', {
+        refresh: localStorage.getItem('refresh')
+      })
     } catch (e) {}
     localStorage.clear()
     setUser(null)
   }
 
-  
-const loginWithGoogle = async (credentialResponse) => {
-  const res = await googleAuth({
-    code: credentialResponse.code,
-    redirect_uri: window.location.origin
-  })
-  localStorage.setItem('access', res.data.access)
-  localStorage.setItem('refresh', res.data.refresh)
-  localStorage.setItem('user', JSON.stringify(res.data.user))
-  setUser(res.data.user)
-  return res.data
-}
+  // ✅ FIXED GOOGLE LOGIN (ID TOKEN FLOW)
+  const loginWithGoogle = async (id_token) => {
+    const res = await api.post('/auth/google/', {
+      id_token: id_token   // ✅ ONLY THIS
+    })
 
+    localStorage.setItem('access', res.data.access)
+    localStorage.setItem('refresh', res.data.refresh)
+    localStorage.setItem('user', JSON.stringify(res.data.user))
+    setUser(res.data.user)
+
+    return res.data
+  }
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loginWithGoogle }}>
+    <AuthContext.Provider
+      value={{ user, login, signup, logout, loginWithGoogle }}
+    >
       {children}
     </AuthContext.Provider>
   )
 }
 
 export const useAuth = () => useContext(AuthContext)
-
-
-
-
-

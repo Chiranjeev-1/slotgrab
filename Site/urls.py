@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views
-
+from .views import google_login
 urlpatterns = [
 
     # Auth
@@ -30,5 +30,5 @@ urlpatterns = [
     path('businesses/<int:business_id>/appointments/', views.BusinessAppointmentsView.as_view(), name='business-appointments'),
     # urls.py
 path('ping/', views.ping),
-path('auth/google/', views.GoogleAuthView.as_view(), name='google-auth'),
+path('auth/google/', google_login),
 ]
