@@ -31,4 +31,6 @@ urlpatterns = [
     # urls.py
 path('ping/', views.ping),
 path('auth/google/', google_login),
+path('auth/forgot-password/', views.forgot_password),
+    path('auth/reset-password/', views.reset_password),
 ]

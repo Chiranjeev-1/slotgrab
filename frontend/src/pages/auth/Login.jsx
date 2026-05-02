@@ -110,6 +110,9 @@ export default function Login() {
           <Link to="/signup" className={styles.switchLink}>
             Sign up
           </Link>
+          <div>
+          <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
         </p>
       </div>
     </div>

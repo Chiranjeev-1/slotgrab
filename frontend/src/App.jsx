@@ -25,6 +25,8 @@ import ServiceForm from './pages/owner/ServiceForm'
 import SlotManager from './pages/owner/SlotManager'
 import ProtectedRoute, { PublicOnlyRoute } from './components/ProtectedRoute'
 import Footer from './components/Footer'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import ResetPassword from './pages/auth/ResetPassword'
 
 export default function App() {
   return (
@@ -45,6 +47,13 @@ export default function App() {
 } />
 <Route path="/signup" element={
   <PublicOnlyRoute><Signup /></PublicOnlyRoute>
+} />
+
+<Route path="/forgot-password" element={
+  <PublicOnlyRoute><ForgotPassword /></PublicOnlyRoute>
+} />
+<Route path="/reset-password/:uid/:token" element={
+  <PublicOnlyRoute><ResetPassword /></PublicOnlyRoute>
 } />
 
 <Route path="*" element={<NotFound />} />

@@ -24,6 +24,12 @@ from rest_framework.response import Response
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_decode
 
 # ─── AUTH ───────────────────────────────────────────
 
@@ -427,3 +433,53 @@ def google_login(request):
 
     except ValueError:
         return Response({"error": "Invalid token"}, status=400)
+
+    
+
+@api_view(['POST'])
+def forgot_password(request):
+    email = request.data.get("email")
+
+    if not email:
+        return Response({"error": "Email is required"}, status=400)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        # Don't reveal if user exists
+        return Response({"message": "If this email exists, a reset link was sent."})
+
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+
+    reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
+
+    send_mail(
+        subject="Reset your password",
+        message=f"Click the link to reset your password:\n{reset_link}",
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[email],
+    )
+
+    return Response({"message": "Password reset link sent"})
+
+
+@api_view(['POST'])
+def reset_password(request):
+    uid = request.data.get("uid")
+    token = request.data.get("token")
+    password = request.data.get("password")
+
+    try:
+        uid = urlsafe_base64_decode(uid).decode()
+        user = User.objects.get(pk=uid)
+    except:
+        return Response({"error": "Invalid link"}, status=400)
+
+    if not default_token_generator.check_token(user, token):
+        return Response({"error": "Invalid or expired token"}, status=400)
+
+    user.set_password(password)
+    user.save()
+
+    return Response({"message": "Password reset successful"})
