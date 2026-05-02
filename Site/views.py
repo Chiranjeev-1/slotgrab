@@ -453,13 +453,15 @@ def forgot_password(request):
     token = default_token_generator.make_token(user)
 
     reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
-
-    send_mail(
-        subject="Reset your password",
-        message=f"Click the link to reset your password:\n{reset_link}",
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[email],
-    )
+    try:
+        send_mail(
+            subject="Reset your password",
+            message=f"Click the link to reset your password:\n{reset_link}",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email],
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
 
     return Response({"message": "Password reset link sent"})
 
