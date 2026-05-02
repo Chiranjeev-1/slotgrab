@@ -224,8 +224,13 @@ class SlotListCreateView(generics.ListCreateAPIView):
             business_id=self.kwargs['business_id']
         )
         available = self.request.query_params.get('available')
-        if available == 'true': 
-            queryset = queryset.filter(is_booked=False, is_active=True)
+        if available == 'true':
+            queryset = queryset.filter(
+                is_booked=False,
+                is_active=True
+            ).exclude(
+                appointments__status__in=['pending', 'confirmed']
+            )
         return queryset
 
     def get_serializer_context(self):
