@@ -224,8 +224,8 @@ class SlotListCreateView(generics.ListCreateAPIView):
             business_id=self.kwargs['business_id']
         )
         available = self.request.query_params.get('available')
-        if available == 'true':
-            queryset = queryset.filter(is_booked=False)
+        if available == 'true': 
+            queryset = queryset.filter(is_booked=False, is_active=True)
         return queryset
 
     def get_serializer_context(self):
@@ -302,6 +302,10 @@ class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
                 {'error': 'Permission denied'},
                 status=status.HTTP_403_FORBIDDEN
             )
+
+        if new_status == 'confirmed':
+            appointment.slot.is_booked = True
+            appointment.slot.save()
 
         if new_status == 'cancelled':
             appointment.status = 'cancelled'
@@ -489,3 +493,31 @@ def reset_password(request):
     user.save()
 
     return Response({"message": "Password reset successful"})
+
+
+
+class SlotToggleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, business_id, pk):
+        try:
+            slot = Slot.objects.get(
+                pk=pk,
+                business_id=business_id,
+                business__user=request.user
+            )
+        except Slot.DoesNotExist:
+            return Response(
+                {'error': 'Slot not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if slot.is_booked:
+            return Response(
+                {'error': 'Cannot disable a booked slot'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        slot.is_active = not slot.is_active
+        slot.save()
+        return Response(SlotSerializer(slot).data)

@@ -50,4 +50,7 @@ export const googleAuth = (data) => api.post('/auth/google/', data)
 
 export const forgotPassword = (data) => api.post('/auth/forgot-password/', data)
 export const resetPassword = (data) => api.post('/auth/reset-password/', data)
+export const toggleSlot = (businessId, slotId) =>
+  api.patch(`/businesses/${businessId}/slots/${slotId}/toggle/`)
+
 export default api

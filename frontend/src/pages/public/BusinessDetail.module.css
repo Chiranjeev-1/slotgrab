@@ -209,3 +209,32 @@
   margin-bottom: 16px;
   border-left: 3px solid #e53e3e;
 }
+
+.datePicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dateLabel {
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #4a4a6a;
+  white-space: nowrap;
+}
+
+.dateInput {
+  padding: 8px 14px;
+  border: 1.5px solid #e0e0f0;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #1a1a2e;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #6c63ff;
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getSlots, createSlot, deleteSlot } from '../../api/axios'
+import { getSlots, createSlot, toggleSlot, deleteSlot } from '../../api/axios'
 import styles from './SlotManager.module.css'
 
 const TIME_SLOTS = [
@@ -10,40 +10,74 @@ const TIME_SLOTS = [
   '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
 ]
 
+const today = new Date().toISOString().split('T')[0]
+
 export default function SlotManager() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [slots, setSlots] = useState([])
+  const [allSlots, setAllSlots] = useState([])
   const [loading, setLoading] = useState(true)
   const [adding, setAdding] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
-  // single slot form
-  const [date, setDate] = useState('')
+  // add form state
+  const [selectedDate, setSelectedDate] = useState(today)
   const [selectedTimes, setSelectedTimes] = useState([])
-
-  // bulk form
   const [bulkMode, setBulkMode] = useState(false)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [bulkTimes, setBulkTimes] = useState([])
 
+  // filter + selection state
+  const [filterDate, setFilterDate] = useState(today)
+  const [filterStatus, setFilterStatus] = useState('all')
+  const [selectedSlotIds, setSelectedSlotIds] = useState([])
+  const [deleting, setDeleting] = useState(false)
+
   useEffect(() => {
     fetchSlots()
   }, [id])
 
+  // reset selection when filter changes
+  useEffect(() => {
+    setSelectedSlotIds([])
+  }, [filterDate, filterStatus])
+
   const fetchSlots = async () => {
     try {
       const res = await getSlots(id)
-      setSlots(res.data)
+      setAllSlots(res.data)
     } catch (e) {
       console.error(e)
     } finally {
       setLoading(false)
     }
   }
+
+  // apply filters
+  const filteredSlots = allSlots
+    .filter((s) => {
+      const dateMatch = filterDate ? s.date === filterDate : true
+      const statusMatch =
+        filterStatus === 'all' ? true :
+        filterStatus === 'available' ? (!s.is_booked && s.is_active) :
+        filterStatus === 'booked' ? s.is_booked :
+        filterStatus === 'disabled' ? !s.is_active : true
+      return dateMatch && statusMatch
+    })
+    .sort((a, b) => {
+      if (a.date !== b.date) return a.date.localeCompare(b.date)
+      return a.time.localeCompare(b.time)
+    })
+
+  // only deletable slots in current filter (not booked)
+  const deletableSlots = filteredSlots.filter((s) => !s.is_booked)
+
+  const existingTimes = allSlots
+    .filter((s) => s.date === selectedDate)
+    .map((s) => s.time.slice(0, 5))
 
   const toggleTime = (time, bulk = false) => {
     if (bulk) {
@@ -71,7 +105,7 @@ export default function SlotManager() {
   const handleAddSingle = async (e) => {
     e.preventDefault()
     if (selectedTimes.length === 0) {
-      setError('Please select at least one time slot')
+      setError('Select at least one time')
       return
     }
     setError(null)
@@ -79,15 +113,14 @@ export default function SlotManager() {
     try {
       const results = await Promise.allSettled(
         selectedTimes.map((time) =>
-          createSlot(id, { date, time: time + ':00' })
+          createSlot(id, { date: selectedDate, time: time + ':00' })
         )
       )
-      const succeeded = results.filter((r) => r.status === 'fulfilled')
-      const failed = results.filter((r) => r.status === 'rejected')
+      const succeeded = results.filter((r) => r.status === 'fulfilled').length
+      const failed = results.filter((r) => r.status === 'rejected').length
       await fetchSlots()
       setSelectedTimes([])
-      setDate('')
-      setSuccess(`${succeeded.length} slot(s) added successfully.${failed.length > 0 ? ` ${failed.length} already existed.` : ''}`)
+      setSuccess(`${succeeded} slot(s) added.${failed > 0 ? ` ${failed} skipped (duplicates).` : ''}`)
       setTimeout(() => setSuccess(null), 4000)
     } catch (e) {
       setError('Failed to add slots')
@@ -98,31 +131,27 @@ export default function SlotManager() {
 
   const handleAddBulk = async (e) => {
     e.preventDefault()
-    if (bulkTimes.length === 0) {
-      setError('Please select at least one time slot')
-      return
-    }
-    if (!startDate || !endDate) {
-      setError('Please select a date range')
+    if (bulkTimes.length === 0 || !startDate || !endDate) {
+      setError('Select date range and at least one time')
       return
     }
     setError(null)
     setAdding(true)
     try {
       const dates = getDatesInRange(startDate, endDate)
-      const allSlots = dates.flatMap((d) =>
+      const allSlotRequests = dates.flatMap((d) =>
         bulkTimes.map((time) => ({ date: d, time: time + ':00' }))
       )
       const results = await Promise.allSettled(
-        allSlots.map((slot) => createSlot(id, slot))
+        allSlotRequests.map((slot) => createSlot(id, slot))
       )
-      const succeeded = results.filter((r) => r.status === 'fulfilled')
-      const failed = results.filter((r) => r.status === 'rejected')
+      const succeeded = results.filter((r) => r.status === 'fulfilled').length
+      const failed = results.filter((r) => r.status === 'rejected').length
       await fetchSlots()
       setBulkTimes([])
       setStartDate('')
       setEndDate('')
-      setSuccess(`${succeeded.length} slot(s) added.${failed.length > 0 ? ` ${failed.length} skipped (duplicates).` : ''}`)
+      setSuccess(`${succeeded} slot(s) added.${failed > 0 ? ` ${failed} skipped.` : ''}`)
       setTimeout(() => setSuccess(null), 4000)
     } catch (e) {
       setError('Failed to add slots')
@@ -131,23 +160,58 @@ export default function SlotManager() {
     }
   }
 
-  const handleDelete = async (slotId) => {
-    if (!confirm('Delete this slot?')) return
+  const handleToggle = async (slotId) => {
     try {
-      await deleteSlot(id, slotId)
-      setSlots((prev) => prev.filter((s) => s.slot_id !== slotId))
+      const res = await toggleSlot(id, slotId)
+      setAllSlots((prev) =>
+        prev.map((s) => (s.slot_id === slotId ? res.data : s))
+      )
     } catch (e) {
       console.error(e)
     }
   }
 
-  const groupedSlots = slots.reduce((acc, slot) => {
-    if (!acc[slot.date]) acc[slot.date] = []
-    acc[slot.date].push(slot)
-    return acc
-  }, {})
+  // checkbox selection
+  const toggleSelectSlot = (slotId) => {
+    setSelectedSlotIds((prev) =>
+      prev.includes(slotId)
+        ? prev.filter((s) => s !== slotId)
+        : [...prev, slotId]
+    )
+  }
 
-  const today = new Date().toISOString().split('T')[0]
+  const handleSelectAll = () => {
+    if (selectedSlotIds.length === deletableSlots.length) {
+      setSelectedSlotIds([])
+    } else {
+      setSelectedSlotIds(deletableSlots.map((s) => s.slot_id))
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedSlotIds.length === 0) return
+    if (!confirm(`Delete ${selectedSlotIds.length} slot(s)? This cannot be undone.`)) return
+    setDeleting(true)
+    try {
+      await Promise.allSettled(
+        selectedSlotIds.map((slotId) => deleteSlot(id, slotId))
+      )
+      setAllSlots((prev) =>
+        prev.filter((s) => !selectedSlotIds.includes(s.slot_id))
+      )
+      setSelectedSlotIds([])
+      setSuccess(`${selectedSlotIds.length} slot(s) deleted.`)
+      setTimeout(() => setSuccess(null), 4000)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  const allDeletableSelected =
+    deletableSlots.length > 0 &&
+    selectedSlotIds.length === deletableSlots.length
 
   return (
     <div className={styles.page}>
@@ -169,11 +233,11 @@ export default function SlotManager() {
             onClick={() => setBulkMode(true)}
             className={`${styles.modeBtn} ${bulkMode ? styles.activeModeBtn : ''}`}
           >
-            Date Range (Bulk)
+            Date Range
           </button>
         </div>
 
-        {/* Add slot form */}
+        {/* Add form */}
         <div className={styles.formCard}>
           <h2 className={styles.formTitle}>
             {bulkMode ? 'Add Slots for Date Range' : 'Add Slots for a Day'}
@@ -183,7 +247,6 @@ export default function SlotManager() {
           {success && <div className={styles.successMsg}>{success}</div>}
 
           <form onSubmit={bulkMode ? handleAddBulk : handleAddSingle}>
-            {/* Date inputs */}
             <div className={styles.dateRow}>
               {bulkMode ? (
                 <>
@@ -215,8 +278,8 @@ export default function SlotManager() {
                   <label className={styles.label}>Date</label>
                   <input
                     type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
                     required
                     min={today}
                     className={styles.input}
@@ -225,79 +288,180 @@ export default function SlotManager() {
               )}
             </div>
 
-            {/* Time grid */}
             <div className={styles.timeSection}>
-              <label className={styles.label}>Select Time Slots</label>
+              <label className={styles.label}>Select Times</label>
               <div className={styles.timeGrid}>
                 {TIME_SLOTS.map((time) => {
-                  const active = bulkMode
+                  const isSelected = bulkMode
                     ? bulkTimes.includes(time)
                     : selectedTimes.includes(time)
+                  const alreadyExists = !bulkMode && existingTimes.includes(time)
                   return (
                     <button
                       key={time}
                       type="button"
+                      disabled={alreadyExists}
                       onClick={() => toggleTime(time, bulkMode)}
-                      className={`${styles.timeChip} ${active ? styles.activeChip : ''}`}
+                      className={`${styles.timeChip} ${isSelected ? styles.activeChip : ''} ${alreadyExists ? styles.existsChip : ''}`}
+                      title={alreadyExists ? 'Already added' : ''}
                     >
                       {time}
+                      {alreadyExists && <span className={styles.existsDot}>✓</span>}
                     </button>
                   )
                 })}
               </div>
               <p className={styles.selectedCount}>
-                {bulkMode ? bulkTimes.length : selectedTimes.length} time(s) selected
+                {bulkMode ? bulkTimes.length : selectedTimes.length} selected
               </p>
             </div>
 
-            <button
-              type="submit"
-              disabled={adding}
-              className={styles.addBtn}
-            >
+            <button type="submit" disabled={adding} className={styles.addBtn}>
               {adding ? 'Adding...' : '+ Add Slots'}
             </button>
           </form>
         </div>
 
-        {/* Slot list grouped by date */}
-        <div className={styles.listSection}>
-          <h2 className={styles.listTitle}>All Slots ({slots.length})</h2>
+        {/* View + filter section */}
+        <div className={styles.viewSection}>
+
+          {/* Filter bar */}
+          <div className={styles.filterBar}>
+            <div className={styles.filterLeft}>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Date</label>
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className={styles.filterInput}
+                />
+              </div>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Status</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className={styles.filterInput}
+                >
+                  <option value="all">All</option>
+                  <option value="available">Available</option>
+                  <option value="booked">Booked</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <button
+                onClick={() => { setFilterDate(''); setFilterStatus('all') }}
+                className={styles.clearBtn}
+              >
+                Clear
+              </button>
+            </div>
+
+            <div className={styles.filterRight}>
+              <span className={styles.resultCount}>
+                {filteredSlots.length} slot(s)
+              </span>
+            </div>
+          </div>
+
+          {/* Bulk action bar — shows when slots selected */}
+          {selectedSlotIds.length > 0 && (
+            <div className={styles.bulkBar}>
+              <span className={styles.bulkCount}>
+                {selectedSlotIds.length} selected
+              </span>
+              <button
+                onClick={handleBulkDelete}
+                disabled={deleting}
+                className={styles.bulkDeleteBtn}
+              >
+                {deleting ? 'Deleting...' : `Delete ${selectedSlotIds.length} slot(s)`}
+              </button>
+              <button
+                onClick={() => setSelectedSlotIds([])}
+                className={styles.bulkCancelBtn}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
+          {/* Select all row */}
+          {deletableSlots.length > 0 && (
+            <div className={styles.selectAllRow}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={allDeletableSelected}
+                  onChange={handleSelectAll}
+                  className={styles.checkbox}
+                />
+                Select all deletable ({deletableSlots.length})
+              </label>
+            </div>
+          )}
+
+          {/* Slot grid */}
           {loading ? (
             <p className={styles.loader}>Loading...</p>
-          ) : Object.keys(groupedSlots).length === 0 ? (
-            <p className={styles.empty}>No slots yet. Add your first slots above.</p>
+          ) : filteredSlots.length === 0 ? (
+            <p className={styles.empty}>No slots match this filter.</p>
           ) : (
-            Object.keys(groupedSlots).sort().map((date) => (
-              <div key={date} className={styles.dateGroup}>
-                <h3 className={styles.dateHeading}>{date}</h3>
-                <div className={styles.slotRow}>
-                  {groupedSlots[date]
-                    .sort((a, b) => a.time.localeCompare(b.time))
-                    .map((slot) => (
-                      <div
-                        key={slot.slot_id}
-                        className={`${styles.slotChip} ${slot.is_booked ? styles.bookedChip : styles.freeChip}`}
-                      >
-                        <span>{slot.time.slice(0, 5)}</span>
-                        <span className={styles.slotStatus}>
-                          {slot.is_booked ? '🔴 Booked' : '🟢 Free'}
-                        </span>
-                        {!slot.is_booked && (
-                          <button
-                            onClick={() => handleDelete(slot.slot_id)}
-                            className={styles.deleteBtn}
-                          >
-                            ✕
-                          </button>
-                        )}
+            <div className={styles.slotGrid}>
+              {filteredSlots.map((slot) => {
+                const isDeletable = !slot.is_booked
+                const isChecked = selectedSlotIds.includes(slot.slot_id)
+
+                return (
+                  <div
+                    key={slot.slot_id}
+                    className={`
+                      ${styles.slotCard}
+                      ${slot.is_booked ? styles.bookedCard : ''}
+                      ${!slot.is_active ? styles.disabledCard : ''}
+                      ${isChecked ? styles.checkedCard : ''}
+                    `}
+                  >
+                    {/* checkbox - only for non-booked */}
+                    {isDeletable && (
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleSelectSlot(slot.slot_id)}
+                        className={styles.slotCheckbox}
+                      />
+                    )}
+
+                    <div className={styles.slotInfo}>
+                      <div>
+                        <p className={styles.slotDate}>{slot.date}</p>
+                        <p className={styles.slotTime}>{slot.time.slice(0, 5)}</p>
                       </div>
-                    ))}
-                </div>
-              </div>
-            ))
+                      <span className={
+                        slot.is_booked ? styles.bookedBadge :
+                        !slot.is_active ? styles.disabledBadge :
+                        styles.availBadge
+                      }>
+                        {slot.is_booked ? 'Booked' : !slot.is_active ? 'Disabled' : 'Available'}
+                      </span>
+                    </div>
+
+                    {!slot.is_booked && (
+                      <button
+                        onClick={() => handleToggle(slot.slot_id)}
+                        className={`${styles.toggleBtn} ${!slot.is_active ? styles.enableBtn : styles.disableBtn}`}
+                      >
+                        {slot.is_active ? 'Disable' : 'Enable'}
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           )}
         </div>
+
       </div>
     </div>
   )

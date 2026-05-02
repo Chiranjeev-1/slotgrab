@@ -71,8 +71,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 class SlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Slot
-        fields = ['slot_id', 'business', 'date', 'time', 'is_booked']
-        read_only_fields = ['slot_id', 'is_booked','business']
+        fields = ['slot_id', 'business', 'date', 'time', 'is_booked', 'is_active']
+        read_only_fields = ['slot_id', 'is_booked', 'business', 'is_active']
 
     def validate(self, data):
         business_id = self.context.get('business_id')
@@ -112,8 +112,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
         read_only_fields = ['appointment_id', 'user', 'status', 'created_at']
 
     def validate_slot_id(self, slot):
-        if slot.is_booked:
-            raise serializers.ValidationError("This slot is already booked.")
+        if not slot.is_active:
+            raise serializers.ValidationError("This slot is not available.")
+        if Appointment.objects.filter(slot=slot).exclude(status='cancelled').exists():
+            raise serializers.ValidationError("This slot is already taken.")
         return slot
 
     def create(self, validated_data):
@@ -121,9 +123,5 @@ class AppointmentSerializer(serializers.ModelSerializer):
         validated_data['user'] = request.user
 
         appointment = super().create(validated_data)
-
-        # mark slot as booked after appointment is created
-        appointment.slot.is_booked = True
-        appointment.slot.save()
 
         return appointment

@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getBusiness, getServices, getSlots, createAppointment } from '../../api/axios'
 import { useAuth } from '../../context/AuthContext'
 import styles from './BusinessDetail.module.css'
-
+const today = new Date().toISOString().split('T')[0]
 export default function BusinessDetail() {
   const { id } = useParams()
   const { user } = useAuth()
@@ -16,8 +16,13 @@ export default function BusinessDetail() {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [loading, setLoading] = useState(true)
   const [booking, setBooking] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [error, setError] = useState(null)
+
+  // add this state at the top with other states
+const [slotDate, setSlotDate] = useState(today)
+
+// add today constant at top of file outside component
+
 
   useEffect(() => {
     fetchAll()
@@ -40,6 +45,8 @@ export default function BusinessDetail() {
     }
   }
 
+  const isOwner = user && business?.owner?.username === user.username
+
   const handleBook = async () => {
     if (!user) {
       navigate('/login', { state: { from: `/businesses/${id}` } })
@@ -56,8 +63,8 @@ export default function BusinessDetail() {
         service_id: selectedService,
         slot_id: selectedSlot,
       })
-      setSuccess(true)
-      fetchAll()
+      alert('Appointment booked! Awaiting confirmation from business.')
+      navigate('/appointments')
     } catch (e) {
       setError(e.response?.data?.detail || 'Booking failed. Try again.')
     } finally {
@@ -70,7 +77,6 @@ export default function BusinessDetail() {
 
   return (
     <div className={styles.page}>
-      {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <span className={styles.fieldBadge}>{business.business_field || 'General'}</span>
@@ -109,32 +115,52 @@ export default function BusinessDetail() {
         </section>
 
         {/* Slots */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Available Slots</h2>
-          {slots.length === 0 ? (
-            <p className={styles.empty}>No available slots right now.</p>
-          ) : (
-            <div className={styles.slotGrid}>
-              {slots.map((slot) => (
-                <div
-                  key={slot.slot_id}
-                  className={`${styles.slotCard} ${selectedSlot === slot.slot_id ? styles.selected : ''}`}
-                  onClick={() => setSelectedSlot(slot.slot_id)}
-                >
-                  <p className={styles.slotDate}>{slot.date}</p>
-                  <p className={styles.slotTime}>{slot.time}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+        {/* Slots */}
+<section className={styles.section}>
+  <h2 className={styles.sectionTitle}>Available Slots</h2>
+
+  <div className={styles.datePicker}>
+    <label className={styles.dateLabel}>Select Date</label>
+    <input
+      type="date"
+      value={slotDate}
+      min={today}
+      onChange={(e) => {
+        setSlotDate(e.target.value)
+        setSelectedSlot(null)
+      }}
+      className={styles.dateInput}
+    />
+  </div>
+
+  {(() => {
+    const filteredSlots = slots.filter((s) => s.date === slotDate)
+    return filteredSlots.length === 0 ? (
+      <p className={styles.empty}>No available slots for this date.</p>
+    ) : (
+      <div className={styles.slotGrid}>
+        {filteredSlots.map((slot) => (
+          <div
+            key={slot.slot_id}
+            className={`${styles.slotCard} ${selectedSlot === slot.slot_id ? styles.selected : ''}`}
+            onClick={() => setSelectedSlot(slot.slot_id)}
+          >
+            <p className={styles.slotTime}>{slot.time.slice(0, 5)}</p>
+          </div>
+        ))}
+      </div>
+    )
+  })()}
+</section>
 
         {/* Book */}
         <section className={styles.bookSection}>
-          {success ? (
-            <div className={styles.successBox}>
-              🎉 Appointment booked successfully!{' '}
-              <Link to="/appointments" className={styles.viewLink}>View My Appointments</Link>
+          {isOwner ? (
+            <div className={styles.ownerNotice}>
+              🏢 You own this business.{' '}
+              <Link to={`/my-businesses/${id}/dashboard`} className={styles.dashLink}>
+                Go to Dashboard →
+              </Link>
             </div>
           ) : (
             <>
