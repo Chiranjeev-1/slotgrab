@@ -31,6 +31,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 
+from .utils.email import send_email
+
 # ─── AUTH ───────────────────────────────────────────
 
 class RegisterView(APIView):
@@ -436,6 +438,8 @@ def google_login(request):
 
     
 
+
+
 @api_view(['POST'])
 def forgot_password(request):
     email = request.data.get("email")
@@ -446,25 +450,25 @@ def forgot_password(request):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        # Don't reveal if user exists
         return Response({"message": "If this email exists, a reset link was sent."})
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
 
-    reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
-    try:
-        send_mail(
-        subject="Reset your password",
-        message=f"Click the link to reset your password:\n{reset_link}",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email],
-        )
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
+    reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}"
+
+    html = f"""
+    <h3>Password Reset</h3>
+    <p>Click below to reset your password:</p>
+    <a href="{reset_link}">Reset Password</a>
+    """
+
+    success = send_email(email, "Reset your password", html)
+
+    if not success:
+        return Response({"error": "Failed to send email"}, status=500)
 
     return Response({"message": "Password reset link sent"})
-
 
 @api_view(['POST'])
 def reset_password(request):
