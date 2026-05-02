@@ -455,10 +455,10 @@ def forgot_password(request):
     reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
     try:
         send_mail(
-            subject="Reset your password",
-            message=f"Click the link to reset your password:\n{reset_link}",
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[email],
+        subject="Reset your password",
+        message=f"Click the link to reset your password:\n{reset_link}",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[email],
         )
     except Exception as e:
         return Response({"error": str(e)}, status=500)
