@@ -89,6 +89,7 @@ CORS_ALLOW_ALL_ORIGINS = False # restrict in production
 CORS_ALLOWED_ORIGINS = [
     "https://appointly-two-eta.vercel.app",
     "http://localhost:5173",
+    "https://slotily.vercel.app",
 ]
 
 CORS_ALLOW_HEADERS = [
