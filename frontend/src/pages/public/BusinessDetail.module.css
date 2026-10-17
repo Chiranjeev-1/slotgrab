@@ -1,240 +1,442 @@
+
 .page {
+  --forest: #163f35;
+  --forest-dark: #102f28;
+  --ivory: #faf8f2;
+  --sage: #dcebe2;
+  --sage-light: #edf4ef;
+  --ink: #202923;
+  --muted: #747e76;
+  --border: #e7e8df;
+
   min-height: 100vh;
+  background: var(--ivory);
+  color: var(--ink);
 }
+
+/* Loading and empty states */
 
 .loader {
-  text-align: center;
-  padding: 80px;
-  color: #8888a8;
-  font-size: 1rem;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
+/* Business header */
+
 .header {
-  background: linear-gradient(135deg, #6c63ff 0%, #574fd6 100%);
-  padding: 60px 24px;
-  color: #fff;
+  padding: 65px 24px 70px;
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(184, 210, 187, 0.20),
+      transparent 35%
+    ),
+    var(--forest);
+  color: white;
 }
 
 .headerContent {
-  max-width: 800px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
 .fieldBadge {
-  display: inline-block;
-  background: rgba(255,255,255,0.2);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  margin-bottom: 17px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.10);
+  color: #e0ede2;
+  font-size: 0.74rem;
+  font-weight: 650;
+  letter-spacing: 0.4px;
 }
 
 .bizName {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 10px;
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
 }
 
-.bizAddress, .bizDomain, .bizOwner {
-  font-size: 0.9rem;
-  opacity: 0.85;
-  margin-bottom: 6px;
+.bizAddress,
+.bizDomain,
+.bizOwner {
+  margin: 8px 0 0;
+  color: #d4e1d6;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
+
+.bizOwner {
+  margin-top: 20px;
+  color: #b6cfbc;
+  font-size: 0.8rem;
+}
+
+/* Main content */
 
 .body {
-  max-width: 800px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 48px 24px 80px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 32px;
 }
 
+.section {
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 22px rgba(28, 54, 36, 0.025);
+}
 
 .sectionTitle {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 16px;
+  margin: 0 0 22px;
+  color: var(--ink);
+  font-size: 1.35rem;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  font-weight: 750;
 }
 
 .empty {
-  color: #8888a8;
-  font-size: 0.9rem;
+  margin: 0;
+  padding: 25px 16px;
+  border: 1px dashed #dfe4da;
+  border-radius: 10px;
+  background: #fcfcf8;
+  color: var(--muted);
+  font-size: 0.87rem;
+  line-height: 1.7;
+  text-align: center;
 }
+
+/* Services */
 
 .serviceGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
 .serviceCard {
-  background: #fff;
-  border: 2px solid #e0e0f0;
-  border-radius: 14px;
-  padding: 20px;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 0;
+  min-height: 155px;
   position: relative;
+  padding: 22px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fdfdfb;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .serviceCard:hover {
-  border-color: #6c63ff;
+  border-color: #b9d0be;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(22, 63, 53, 0.06);
 }
 
 .serviceCard.selected {
-  border-color: #6c63ff;
-  background: #f0eeff;
-  box-shadow: 0 4px 16px rgba(108,99,255,0.15);
+  border: 1.5px solid var(--forest);
+  background: var(--sage-light);
+  box-shadow: 0 0 0 2px rgba(22, 63, 53, 0.045);
 }
 
 .svcName {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 6px;
+  margin: 0 0 10px;
+  padding-right: 4px;
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  font-weight: 750;
+  overflow-wrap: anywhere;
 }
 
 .svcDesc {
+  margin: 0 0 15px;
+  color: var(--muted);
   font-size: 0.82rem;
-  color: #8888a8;
-  margin-bottom: 10px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .svcCharge {
-  font-size: 1.1rem;
+  margin: auto 0 0;
+  padding-top: 10px;
+  color: var(--forest);
+  font-size: 1.15rem;
   font-weight: 800;
-  color: #6c63ff;
 }
 
 .checkmark {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #6c63ff;
-  background: #e0dbff;
-  padding: 2px 8px;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #dcebe2;
+  color: var(--forest);
+  font-size: 0.7rem;
+  font-weight: 750;
 }
 
-.slotGrid {
+/* Date picker */
+
+.datePicker {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 24px;
+}
+
+.dateLabel {
+  color: #465349;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.dateInput {
+  width: 100%;
+  max-width: 270px;
+  min-height: 46px;
+  padding: 10px 13px;
+  border: 1px solid #dfe3d9;
+  border-radius: 9px;
+  outline: none;
+  background: #fdfdfb;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.87rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dateInput:focus-visible {
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(22, 63, 53, 0.10);
+}
+
+/* Time slots */
+
+.slotGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
 .slotCard {
+  min-width: 0;
+  padding: 15px 10px;
+  border: 1px solid #dfe5db;
+  border-radius: 9px;
   background: #fff;
-  border: 2px solid #e0e0f0;
-  border-radius: 12px;
-  padding: 14px 20px;
-  cursor: pointer;
+  color: #465349;
   text-align: center;
-  transition: border-color 0.2s;
-  min-width: 120px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .slotCard:hover {
-  border-color: #6c63ff;
+  border-color: #8caf95;
+  background: #f5f8f2;
+  transform: translateY(-1px);
 }
 
 .slotCard.selected {
-  border-color: #6c63ff;
-  background: #f0eeff;
-}
-
-.slotDate {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #4a4a6a;
-  margin-bottom: 4px;
+  border-color: var(--forest);
+  background: var(--forest);
+  color: #fff;
 }
 
 .slotTime {
-  font-size: 1rem;
+  margin: 0;
+  font-size: 0.87rem;
   font-weight: 700;
-  color: #1a1a2e;
 }
 
+/* Booking action */
+
 .bookSection {
-  padding-bottom: 40px;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
 }
 
 .bookBtn {
   width: 100%;
-  padding: 16px;
-  background: #ff6b35;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--forest);
   color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 12px;
-  transition: background 0.2s, transform 0.1s;
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.bookBtn:hover {
-  background: #e55a25;
+.bookBtn:hover:not(:disabled) {
+  background: var(--forest-dark);
   transform: translateY(-1px);
 }
 
 .bookBtn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.successBox {
-  background: #f0fff4;
-  color: #276749;
-  padding: 16px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  border-left: 3px solid #38a169;
-}
-
-.viewLink {
-  color: #6c63ff;
-  font-weight: 700;
-  margin-left: 8px;
-}
-
 .errorBox {
-  background: #fff0f0;
-  color: #e53e3e;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 0.87rem;
   margin-bottom: 16px;
-  border-left: 3px solid #e53e3e;
+  padding: 13px 15px;
+  border: 1px solid #f0d0c9;
+  border-left: 3px solid #b54735;
+  border-radius: 9px;
+  background: #fff5f2;
+  color: #923b2c;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
-.datePicker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.dateLabel {
-  font-size: 0.87rem;
-  font-weight: 600;
-  color: #4a4a6a;
-  white-space: nowrap;
-}
-
-.dateInput {
-  padding: 8px 14px;
-  border: 1.5px solid #e0e0f0;
-  border-radius: 10px;
+.ownerNotice {
+  padding: 18px;
+  border: 1px solid #d9e8da;
+  border-radius: 11px;
+  background: var(--sage-light);
+  color: var(--forest);
   font-size: 0.88rem;
-  color: #1a1a2e;
-  background: #fafafa;
-  cursor: pointer;
+  line-height: 1.8;
 }
 
-.dateInput:focus {
-  outline: none;
-  border-color: #6c63ff;
+.dashLink {
+  display: inline-block;
+  margin-left: 5px;
+  color: var(--forest);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dashLink:hover {
+  color: #467b58;
+}
+
+.serviceCard:focus-visible,
+.slotCard:focus-visible,
+.bookBtn:focus-visible,
+.dashLink:focus-visible {
+  outline: 3px solid #8caf95;
+  outline-offset: 3px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .serviceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .slotGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .body {
+    padding-top: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 44px 22px 48px;
+  }
+
+  .bizName {
+    letter-spacing: -0.8px;
+  }
+
+  .body {
+    padding: 24px 16px 55px;
+    gap: 20px;
+  }
+
+  .section {
+    padding: 21px 16px;
+    border-radius: 13px;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+
+  .serviceGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .serviceCard {
+    min-height: auto;
+    padding: 19px 16px;
+  }
+
+  .slotGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .slotCard {
+    padding: 14px 7px;
+  }
+
+  .dateInput {
+    max-width: none;
+  }
+
+  .bookSection {
+    padding: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

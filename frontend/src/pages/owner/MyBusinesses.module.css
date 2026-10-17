@@ -1,7 +1,9 @@
+
 .page {
   min-height: 100vh;
-  background: #f8f9ff;
-  padding: 40px 24px;
+  background: #FAF8F2;
+  padding: 48px 24px 64px;
+  color: #202923;
 }
 
 .container {
@@ -13,128 +15,211 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px;
+  gap: 20px;
+  margin-bottom: 32px;
 }
 
 .title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #1a1a2e;
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 750;
+  letter-spacing: -0.7px;
+  color: #163F35;
+}
+
+.addBtn,
+.createBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: #163F35;
+  color: #FAF8F2;
+  padding: 12px 20px;
+  border: 1px solid #163F35;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .addBtn {
-  background: #6c63ff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  transition: background 0.2s;
+  white-space: nowrap;
 }
 
-.addBtn:hover {
-  background: #574fd6;
+.addBtn:hover,
+.createBtn:hover {
+  background: #102F28;
+  transform: translateY(-1px);
 }
 
 .loader {
   text-align: center;
-  color: #8888a8;
-  padding: 60px 0;
+  color: #747E76;
+  padding: 80px 0;
+  font-size: 0.95rem;
 }
 
 .empty {
-  text-align: center;
-  color: #8888a8;
-  padding: 60px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  gap: 18px;
+  padding: 64px 24px;
+  background: #fff;
+  border: 1px solid #E5E7DE;
+  border-radius: 18px;
+  text-align: center;
+  color: #747E76;
 }
 
-.createBtn {
-  background: #6c63ff;
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 10px;
-  font-weight: 600;
+.empty p {
+  margin: 0;
+  line-height: 1.7;
+  font-size: 0.95rem;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 22px;
 }
 
 .card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  min-width: 0;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #E5E7DE;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(22, 63, 53, 0.035);
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #C7D9CD;
+  box-shadow: 0 10px 28px rgba(22, 63, 53, 0.08);
 }
 
 .cardTop {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .fieldBadge {
-  background: #f0eeff;
-  color: #6c63ff;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  background: #EDF4EF;
+  color: #245B48;
+  border: 1px solid #DCEBE2;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 650;
 }
 
 .bizName {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  margin: 2px 0 0;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  color: #163F35;
 }
 
 .bizAddress {
-  font-size: 0.85rem;
-  color: #8888a8;
+  margin: 0;
+  color: #747E76;
+  font-size: 0.87rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .cardActions {
   display: flex;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.dashboardBtn,
+.editBtn {
+  display: inline-flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 11px 12px;
+  border-radius: 9px;
+  font-size: 0.85rem;
+  font-weight: 650;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .dashboardBtn {
-  flex: 1;
-  text-align: center;
-  background: #6c63ff;
+  background: #163F35;
   color: #fff;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: background 0.2s;
+  border: 1px solid #163F35;
 }
 
 .dashboardBtn:hover {
-  background: #574fd6;
+  background: #102F28;
+  border-color: #102F28;
 }
 
 .editBtn {
-  flex: 1;
-  text-align: center;
-  background: #f0eeff;
-  color: #6c63ff;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: background 0.2s;
+  background: #EDF4EF;
+  color: #245B48;
+  border: 1px solid #DCEBE2;
 }
 
 .editBtn:hover {
-  background: #e0d8ff;
+  background: #DCEBE2;
+  border-color: #C7D9CD;
+}
+
+.addBtn:focus-visible,
+.createBtn:focus-visible,
+.dashboardBtn:focus-visible,
+.editBtn:focus-visible {
+  outline: 3px solid #A7C9B2;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px 16px 48px;
+  }
+
+  .topBar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .addBtn {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .empty {
+    padding: 44px 20px;
+  }
 }

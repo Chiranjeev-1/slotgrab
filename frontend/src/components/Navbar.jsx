@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -11,52 +12,84 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout()
+    setMenuOpen(false)
     navigate('/')
   }
 
   const isActive = (path) => location.pathname === path
 
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
-          
-          Appointly
+        <Link to="/" className={styles.logo} onClick={closeMenu}>
+          <span className={styles.logoMark}>a.</span>
+          <span>appointly<span className={styles.logoDot}>.</span></span>
         </Link>
 
         <button
-          className={styles.hamburger}
+          type="button"
+          className={`${styles.hamburger} ${
+            menuOpen ? styles.hamburgerOpen : ''
+          }`}
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation"
         >
-          <span /><span /><span />
+          <span />
+          <span />
+          <span />
         </button>
 
-        <div className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
+        <div
+          id="main-navigation"
+          className={`${styles.links} ${menuOpen ? styles.open : ''}`}
+        >
           <Link
             to="/businesses"
-            className={`${styles.link} ${isActive('/businesses') ? styles.activeLink : ''}`}
+            onClick={closeMenu}
+            className={`${styles.link} ${
+              isActive('/businesses') ? styles.activeLink : ''
+            }`}
           >
-            Browse
+            Explore
           </Link>
 
           {user ? (
             <>
               <Link
                 to="/appointments"
-                className={`${styles.link} ${isActive('/appointments') ? styles.activeLink : ''}`}
+                onClick={closeMenu}
+                className={`${styles.link} ${
+                  isActive('/appointments') ? styles.activeLink : ''
+                }`}
               >
                 My Appointments
               </Link>
+
               <Link
                 to="/my-businesses"
-                className={`${styles.link} ${isActive('/my-businesses') ? styles.activeLink : ''}`}
+                onClick={closeMenu}
+                className={`${styles.link} ${
+                  isActive('/my-businesses') ? styles.activeLink : ''
+                }`}
               >
                 My Businesses
               </Link>
+
               <div className={styles.userMenu}>
-                <span className={styles.username}>Hi, {user.username}</span>
-                <button onClick={handleLogout} className={styles.logoutBtn}>
-                  Logout
+                <span className={styles.username}>
+                  Hi, {user.username}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className={styles.logoutBtn}
+                >
+                  Log out
                 </button>
               </div>
             </>
@@ -64,11 +97,21 @@ export default function Navbar() {
             <div className={styles.authLinks}>
               <Link
                 to="/login"
-                className={`${styles.loginBtn} ${isActive('/login') ? styles.activeLoginBtn : ''}`}
+                onClick={closeMenu}
+                className={`${styles.loginBtn} ${
+                  isActive('/login') ? styles.activeLoginBtn : ''
+                }`}
               >
-                Login
+                Log in
               </Link>
-              <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
+
+              <Link
+                to="/signup"
+                onClick={closeMenu}
+                className={styles.signupBtn}
+              >
+                Get Started <span>↗</span>
+              </Link>
             </div>
           )}
         </div>

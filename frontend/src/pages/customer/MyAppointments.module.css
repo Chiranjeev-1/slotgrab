@@ -1,110 +1,211 @@
+
 .page {
   min-height: 100vh;
-  background: #f8f9ff;
-  padding: 40px 24px;
+  padding: 44px 24px 64px;
+  background: #FAF8F2;
+  color: #202923;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
 .title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #1a1a2e;
-  margin-bottom: 28px;
+  margin: 0 0 30px;
+  color: #163F35;
+  font-size: clamp(1.7rem, 3vw, 2.15rem);
+  font-weight: 750;
+  letter-spacing: -0.6px;
 }
 
 .loader {
+  padding: 64px 20px;
+  color: #747E76;
+  font-size: 0.95rem;
   text-align: center;
-  color: #8888a8;
-  padding: 60px 0;
 }
 
 .empty {
-  text-align: center;
-  color: #8888a8;
-  padding: 60px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
+  padding: 56px 24px;
+  background: #fff;
+  border: 1px solid #E5E7DE;
+  border-radius: 18px;
+  text-align: center;
+  color: #747E76;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
 .browseBtn {
-  background: #6c63ff;
-  color: #fff;
-  padding: 10px 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 22px;
+  border: 1px solid #163F35;
   border-radius: 10px;
-  font-weight: 600;
+  background: #163F35;
+  color: #fff;
   font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.browseBtn:hover {
+  background: #102F28;
+  transform: translateY(-1px);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 15px;
 }
 
 .card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  border: 1.5px solid transparent;
-  transition: border-color 0.2s, transform 0.2s;
+  gap: 22px;
+  padding: 22px 24px;
+  background: #fff;
+  border: 1px solid #E5E7DE;
+  border-radius: 15px;
+  box-shadow: 0 3px 14px rgba(22, 63, 53, 0.025);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-  border-color: #6c63ff;
-  transform: translateX(4px);
+  border-color: #B8D1BF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(22, 63, 53, 0.07);
 }
 
 .cardLeft {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
+  min-width: 0;
 }
 
 .serviceName {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  margin: 0;
+  color: #163F35;
+  font-size: 1.02rem;
+  font-weight: 750;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .bizName {
-  font-size: 0.85rem;
-  color: #8888a8;
+  margin: 0;
+  color: #747E76;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .slotInfo {
   display: flex;
-  gap: 14px;
-  font-size: 0.83rem;
-  color: #666688;
-  color: #555577;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 5px;
+  color: #56665A;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .cardRight {
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
 .statusBadge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .arrow {
-  color: #6c63ff;
-  font-size: 1.1rem;
+  color: #568066;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card:hover .arrow {
+  color: #163F35;
+  transform: translateX(3px);
+}
+
+.card:focus-visible,
+.browseBtn:focus-visible {
+  outline: 3px solid #A7C9B2;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 30px 16px 48px;
+  }
+
+  .title {
+    margin-bottom: 24px;
+  }
+
+  .card {
+    align-items: flex-start;
+    gap: 14px;
+    padding: 19px 17px;
+  }
+
+  .cardRight {
+    gap: 10px;
+  }
+
+  .statusBadge {
+    padding: 6px 9px;
+    font-size: 0.7rem;
+  }
+
+  .slotInfo {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 380px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .cardRight {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #EEF0E9;
+  }
 }

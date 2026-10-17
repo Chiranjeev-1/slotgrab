@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { getBusinesses } from '../../api/axios'
@@ -7,21 +8,27 @@ export default function BusinessList() {
   const [businesses, setBusinesses] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [error, setError] = useState('')
   const [searchParams] = useSearchParams()
 
+  const category = searchParams.get('category') || ''
+
   useEffect(() => {
-    const category = searchParams.get('category') || ''
     setSearch(category)
     fetchBusinesses(category)
-  }, [])
+  }, [category])
 
-  const fetchBusinesses = async (q = search) => {
+  const fetchBusinesses = async (query = search) => {
     setLoading(true)
+    setError('')
+
     try {
-      const res = await getBusinesses({ search: q })
+      const res = await getBusinesses({ search: query })
       setBusinesses(res.data)
     } catch (e) {
       console.error(e)
+      setBusinesses([])
+      setError('Unable to load businesses. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -34,9 +41,13 @@ export default function BusinessList() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Find a Business</h1>
-        <p className={styles.subtitle}>Browse and book from top service providers</p>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Find your next favourite.</h1>
+
+        <p className={styles.subtitle}>
+          Discover trusted professionals and book services
+          that fit your schedule.
+        </p>
 
         <form onSubmit={handleSearch} className={styles.searchBar}>
           <input
@@ -45,16 +56,35 @@ export default function BusinessList() {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, location or category..."
             className={styles.searchInput}
+            aria-label="Search businesses"
           />
-          <button type="submit" className={styles.searchBtn}>Search</button>
-        </form>
-      </div>
 
-      <div className={styles.container}>
+          <button type="submit" className={styles.searchBtn} disabled={loading}>
+            {loading ? 'Searching…' : 'Search'}
+          </button>
+        </form>
+      </header>
+
+      <main className={styles.container}>
         {loading ? (
-          <div className={styles.loader}>Loading businesses...</div>
+          <div className={styles.loader} role="status">
+            Finding businesses for you…
+          </div>
+        ) : error ? (
+          <div className={styles.empty} role="alert">
+            <p>{error}</p>
+            <button
+              type="button"
+              className={styles.searchBtn}
+              onClick={() => fetchBusinesses()}
+            >
+              Try again
+            </button>
+          </div>
         ) : businesses.length === 0 ? (
-          <div className={styles.empty}>No businesses found. Try a different search.</div>
+          <div className={styles.empty}>
+            No businesses found. Try another search or category.
+          </div>
         ) : (
           <div className={styles.grid}>
             {businesses.map((b) => (
@@ -64,22 +94,41 @@ export default function BusinessList() {
                 className={styles.card}
               >
                 <div className={styles.cardTop}>
-                  <span className={styles.fieldBadge}>{b.business_field || 'General'}</span>
+                  <span className={styles.fieldBadge}>
+                    {b.business_field || 'General'}
+                  </span>
                 </div>
-                <h3 className={styles.bizName}>{b.business_name}</h3>
-                <p className={styles.bizAddress}>📍 {b.address}</p>
-                {b.domain && (
-                  <p className={styles.bizDomain}>🌐 {b.domain}</p>
+
+                <h2 className={styles.bizName}>{b.business_name}</h2>
+
+                {b.address && (
+                  <p className={styles.bizAddress}>
+                    <span aria-hidden="true">⌖ </span>
+                    {b.address}
+                  </p>
                 )}
+
+                {b.domain && (
+                  <p className={styles.bizDomain}>
+                    <span aria-hidden="true">↗ </span>
+                    {b.domain}
+                  </p>
+                )}
+
                 <div className={styles.cardFooter}>
-                  <span className={styles.ownerName}>by {b.owner?.username}</span>
-                  <span className={styles.viewBtn}>View →</span>
+                  <span className={styles.ownerName}>
+                    By {b.owner?.username || 'Business owner'}
+                  </span>
+
+                  <span className={styles.viewBtn}>
+                    View details <span aria-hidden="true">→</span>
+                  </span>
                 </div>
               </Link>
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }

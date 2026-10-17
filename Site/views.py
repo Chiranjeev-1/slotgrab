@@ -211,6 +211,8 @@ class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # ─── SLOT ───────────────────────────────────────────
 
+
+
 class SlotListCreateView(generics.ListCreateAPIView):
     serializer_class = SlotSerializer
 

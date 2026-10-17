@@ -1,104 +1,305 @@
+
+/* Appointly — Authentication */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .page {
   min-height: 100vh;
   display: flex;
+  background: #FAF8F2;
+  color: #202923;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+/* Brand panel */
+
+.brandPanel {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  padding: 44px 40px;
+  overflow: hidden;
+  background: #163F35;
+}
+
+.brandPanel::before {
+  content: "";
+  position: absolute;
+  right: -150px;
+  bottom: -150px;
+  width: 380px;
+  height: 380px;
+  border: 55px solid rgba(220, 235, 226, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.brandPanel::after {
+  content: "";
+  position: absolute;
+  top: 35%;
+  left: -180px;
+  width: 300px;
+  height: 300px;
+  border: 45px solid rgba(220, 235, 226, 0.045);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .brandPanel {
+    display: flex;
+  }
+}
+
+.brandLogo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brandIcon {
+  display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f0eeff 0%, #f8f9ff 100%);
-  padding: 24px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: #28614D;
+}
+
+.brandIcon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.brandName {
+  color: #FAF8F2;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+/* Brand content */
+
+.brandBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 0 36px;
+}
+
+.brandHeadline {
+  margin: 0 0 18px;
+  color: #FAF8F2;
+  font-size: clamp(2rem, 3vw, 2.45rem);
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: -1.3px;
+}
+
+.brandAccent {
+  color: #B7D9C1;
+}
+
+.brandDesc {
+  max-width: 290px;
+  margin: 0;
+  color: #C0D1C6;
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+.brandBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 28px;
+}
+
+.badge {
+  padding: 7px 11px;
+  border: 1px solid rgba(220, 235, 226, 0.17);
+  border-radius: 999px;
+  background: rgba(220, 235, 226, 0.08);
+  color: #DCEBE2;
+  font-size: 0.73rem;
+  font-weight: 550;
+}
+
+/* Brand statistics */
+
+.brandStats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.statNum {
+  color: #FAF8F2;
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  color: #B0C5B7;
+  font-size: 0.72rem;
+}
+
+/* Form panel */
+
+.formPanel {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 48px 32px;
 }
 
 .card {
   width: 100%;
-  max-width: 440px;
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 8px 40px rgba(108, 99, 255, 0.12);
+  max-width: 410px;
+  margin: auto;
 }
 
 .header {
-  margin-bottom: 28px;
+  margin-bottom: 30px;
 }
 
 .title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #1a1a2e;
-  margin-bottom: 6px;
+  margin: 0 0 9px;
+  color: #163F35;
+  font-size: clamp(1.7rem, 4vw, 2rem);
+  font-weight: 750;
+  letter-spacing: -0.9px;
+  line-height: 1.25;
 }
 
 .subtitle {
+  margin: 0;
+  color: #747E76;
   font-size: 0.9rem;
-  color: #8888a8;
+  line-height: 1.7;
 }
 
+/* Error banner */
+
 .error {
-  background: #fff0f0;
-  color: #e53e3e;
-  font-size: 0.85rem;
-  padding: 12px 16px;
-  border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 3px solid #e53e3e;
+  padding: 12px 15px;
+  border: 1px solid #F0D1CB;
+  border-left: 4px solid #A64434;
+  border-radius: 10px;
+  background: #FFF1EE;
+  color: #963D32;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
+
+/* Form */
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 19px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .label {
+  color: #34483D;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #4a4a6a;
+  font-weight: 650;
 }
 
 .optional {
+  color: #879087;
+  font-size: 0.78rem;
   font-weight: 400;
-  color: #aaaacc;
 }
 
 .input {
-  padding: 11px 14px;
-  border: 1.5px solid #e0e0f0;
+  width: 100%;
+  min-height: 45px;
+  padding: 12px 14px;
+  border: 1px solid #DDE2D8;
   border-radius: 10px;
-  font-size: 0.9rem;
-  color: #1a1a2e;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: #fafafa;
+  background: #fff;
+  color: #202923;
+  font-family: inherit;
+  font-size: 0.91rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+  color: #9AA198;
 }
 
 .input:focus {
   outline: none;
-  border-color: #6c63ff;
-  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
-  background: #fff;
+  border-color: #6D9B80;
+  box-shadow: 0 0 0 3px rgba(109, 155, 128, 0.15);
 }
+
+/* Submit */
 
 .submitBtn {
-  margin-top: 6px;
-  padding: 12px;
-  background: #6c63ff;
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 700;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 3px;
+  padding: 13px 20px;
+  border: 1px solid #163F35;
   border-radius: 10px;
-  transition: background 0.2s, transform 0.1s;
+  background: #163F35;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease,
+    transform 0.15s ease;
 }
 
-.submitBtn:hover {
-  background: #574fd6;
+.submitBtn:hover:not(:disabled) {
+  background: #102F28;
+  box-shadow: 0 5px 15px rgba(22, 63, 53, 0.15);
 }
 
-.submitBtn:active {
-  transform: scale(0.98);
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .submitBtn:disabled {
@@ -106,61 +307,98 @@
   cursor: not-allowed;
 }
 
-.switchText {
-  text-align: center;
-  font-size: 0.87rem;
-  color: #8888a8;
-  margin-top: 24px;
-}
-
-.switchLink {
-  color: #6c63ff;
-  font-weight: 600;
-}
-
-.switchLink:hover {
-  text-decoration: underline;
-}
+/* Google login divider */
 
 .divider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 8px 0;
-  color: #aaaacc;
-  font-size: 0.82rem;
+  gap: 14px;
+  margin: 23px 0 18px;
+  color: #879087;
+  font-size: 0.8rem;
 }
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
-  background: #e0e0f0;
+  background: #E5E7DE;
 }
 
-.googleBtn {
-  width: 100%;
+.googleWrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 11px;
-  background: #fff;
-  border: 1.5px solid #e0e0f0;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  transition: background 0.2s, border-color 0.2s;
+  width: 100%;
+  min-width: 0;
 }
 
-.googleBtn:hover {
-  background: #f8f9ff;
-  border-color: #6c63ff;
+/* Links */
+
+.switchText {
+  margin: 25px 0 0;
+  color: #747E76;
+  font-size: 0.85rem;
+  line-height: 2;
+  text-align: center;
 }
 
-.googleIcon {
-  width: 18px;
-  height: 18px;
+.switchLink {
+  color: #245B48;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.switchLink:hover {
+  color: #102F28;
+  text-decoration: underline;
+}
+
+.forgotLink {
+  display: block;
+  width: fit-content;
+  margin: 9px auto 0;
+  color: #747E76;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgotLink:hover {
+  color: #245B48;
+  text-decoration: underline;
+}
+
+/* Keyboard focus */
+
+.switchLink:focus-visible,
+.forgotLink:focus-visible {
+  outline: 2px solid #6D9B80;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+@media (max-width: 899px) {
+  .formPanel {
+    padding: 40px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formPanel {
+    align-items: flex-start;
+    padding: 38px 20px;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+  .header {
+    margin-bottom: 25px;
+  }
+
+  .form {
+    gap: 17px;
+  }
 }

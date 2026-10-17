@@ -1,141 +1,305 @@
+
 .page {
+  --forest: #163f35;
+  --forest-dark: #102f28;
+  --ivory: #faf8f2;
+  --sage: #dcebe2;
+  --sage-light: #edf4ef;
+  --ink: #202923;
+  --muted: #747e76;
+  --border: #e7e8df;
+
   min-height: 100vh;
+  background: var(--ivory);
+  color: var(--ink);
 }
 
+/* Search header */
+
 .header {
-  background: linear-gradient(135deg, #6c63ff 0%, #574fd6 100%);
-  padding: 60px 24px 40px;
+  padding: 66px 24px 52px;
   text-align: center;
-  color: #fff;
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      rgba(185, 210, 188, 0.23),
+      transparent 30%
+    ),
+    var(--forest);
+  color: white;
 }
 
 .title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 8px;
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+  font-weight: 750;
 }
 
 .subtitle {
-  font-size: 1rem;
-  opacity: 0.85;
-  margin-bottom: 28px;
+  max-width: 520px;
+  margin: 0 auto 29px;
+  color: #d2e0d5;
+  font-size: 0.95rem;
+  line-height: 1.8;
 }
 
+/* Search form */
+
 .searchBar {
+  max-width: 660px;
+  min-height: 58px;
   display: flex;
-  max-width: 580px;
+  align-items: center;
+  gap: 8px;
   margin: 0 auto;
-  background: #fff;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(8, 30, 22, 0.13);
 }
 
 .searchInput {
   flex: 1;
-  padding: 14px 18px;
-  border: none;
-  font-size: 0.92rem;
-  color: #1a1a2e;
+  min-width: 0;
+  padding: 13px 15px;
+  border: 0;
   outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.searchInput::placeholder {
+  color: #969d95;
+}
+
+.searchInput:focus-visible {
+  border-radius: 7px;
+  outline: 2px solid #8caf95;
+  outline-offset: -2px;
 }
 
 .searchBtn {
-  background: #ff6b35;
-  color: #fff;
-  padding: 14px 24px;
-  font-size: 0.92rem;
+  min-height: 44px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--forest);
+  color: white;
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  transition: background 0.2s;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .searchBtn:hover {
-  background: #e55a25;
+  background: var(--forest-dark);
+  transform: translateY(-1px);
 }
+
+/* Business listing */
 
 .container {
   max-width: 1200px;
+  min-height: 350px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 48px 24px 80px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
 }
 
 .card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  border: 1.5px solid transparent;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 13px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: #fff;
+  text-decoration: none;
+  box-shadow: 0 5px 22px rgba(28, 54, 36, 0.025);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-  border-color: #6c63ff;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(108,99,255,0.15);
+  transform: translateY(-4px);
+  border-color: #c3d6c5;
+  box-shadow: 0 14px 32px rgba(22, 63, 53, 0.075);
+}
+
+.card:focus-visible {
+  outline: 3px solid #8caf95;
+  outline-offset: 3px;
 }
 
 .cardTop {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 26px;
 }
 
 .fieldBadge {
-  background: #f0eeff;
-  color: #6c63ff;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 30px;
+  background: var(--sage-light);
+  color: var(--forest);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .bizName {
+  margin: 0;
+  color: var(--ink);
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-weight: 750;
+  line-height: 1.45;
+  letter-spacing: -0.25px;
+  overflow-wrap: anywhere;
 }
 
-.bizAddress {
-  font-size: 0.85rem;
-  color: #8888a8;
+.bizAddress,
+.bizDomain {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .bizDomain {
-  font-size: 0.82rem;
-  color: #8888a8;
+  font-size: 0.79rem;
 }
 
 .cardFooter {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f5;
+  padding-top: 17px;
+  border-top: 1px solid #eff0e9;
 }
 
 .ownerName {
-  font-size: 0.8rem;
-  color: #aaaacc;
+  min-width: 0;
+  color: #899188;
+  font-size: 0.76rem;
+  overflow-wrap: anywhere;
 }
 
 .viewBtn {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #6c63ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: var(--forest);
+  font-size: 0.82rem;
+  font-weight: 750;
+  transition: gap 0.2s ease;
 }
 
-.loader, .empty {
+.card:hover .viewBtn {
+  gap: 13px;
+}
+
+/* Loading and empty states */
+
+.loader,
+.empty {
+  padding: 65px 20px;
+  border: 1px dashed #dfe4da;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--muted);
   text-align: center;
-  color: #8888a8;
-  font-size: 1rem;
-  padding: 60px 0;
+  font-size: 0.91rem;
+  line-height: 1.8;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+  }
+
+  .container {
+    padding: 36px 22px 60px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 46px 19px 38px;
+  }
+
+  .title {
+    font-size: 2.15rem;
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    font-size: 0.88rem;
+  }
+
+  .searchBar {
+    gap: 3px;
+    min-height: 54px;
+  }
+
+  .searchInput {
+    padding: 11px 9px;
+    font-size: 0.8rem;
+  }
+
+  .searchBtn {
+    min-height: 42px;
+    padding: 0 15px;
+    font-size: 0.8rem;
+  }
+
+  .container {
+    padding: 27px 16px 50px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

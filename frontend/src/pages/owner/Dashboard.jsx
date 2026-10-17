@@ -8,10 +8,10 @@ import {
 import styles from './Dashboard.module.css'
 
 const statusColors = {
-  pending: '#f59e0b',
-  confirmed: '#6c63ff',
-  completed: '#10b981',
-  cancelled: '#ef4444',
+  pending: '#96651c',
+  confirmed: '#245f48',
+  completed: '#286b43',
+  cancelled: '#a64434',
 }
 
 export default function Dashboard() {
